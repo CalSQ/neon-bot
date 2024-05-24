@@ -9,8 +9,8 @@ export const config = {
   },
 
   verification: {
-    verificationGuildId: "1239142116806889522",
-    verifiedRoleId: "1239535026186489958",
+    verificationGuildId: "1203369993266528286",
+    verifiedRoleId: "1242919565294440540",
   },
 
   colors: {

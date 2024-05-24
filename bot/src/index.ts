@@ -8,7 +8,6 @@ const client = new ApplicationClient({
 
 if (Bun.argv.includes("--deploy")) {
   await client.deploy(true)
-  process.exit(0)
 }
 
 client.login(Bun.env.DISCORD_BOT_TOKEN).catch((err: unknown) => {
