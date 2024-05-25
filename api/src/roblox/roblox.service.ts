@@ -69,4 +69,13 @@ export class RobloxService {
     this.wsHandler.authenticate(request.session.user);
     return await request.session.save();
   }
+
+  async getStatus(discordId: string) {
+    return this.userModel.findOne({ discordId }).then((user) => {
+      if (!user) {
+        throw new Error('User not found.', { cause: 'Application' });
+      }
+      return { ...user.roblox, verifiedAt: user.createdAt };
+    });
+  }
 }

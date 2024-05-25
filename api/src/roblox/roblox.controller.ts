@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Inject,
+  Param,
   Req,
   Res,
 } from '@nestjs/common';
@@ -42,5 +43,20 @@ export class RobloxController {
         robloxId: request.session.user.roblox.id,
       },
     });
+  }
+
+  @Get('status/:id')
+  async status(@Param('id') id: string) {
+    try {
+      return await this.robloxService.getStatus(id);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      }
+      throw new HttpException(
+        'There was a problem.',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

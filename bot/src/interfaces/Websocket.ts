@@ -10,3 +10,5 @@ export interface UserSession {
   discordId: string
   roblox: RobloxProfile
 }
+
+export type RobloxStatus = RobloxProfile & { verifiedAt: Date }

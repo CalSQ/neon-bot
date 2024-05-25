@@ -26,7 +26,6 @@ export default event(Events.ClientReady, true, async ({ client }) => {
 
   // Websocket
   if (Bun.env.WEBSOCKET_SERVER) {
-    console.log(Bun.env.WEBSOCKET_SERVER)
     const socket = io(Bun.env.WEBSOCKET_SERVER)
 
     socket.on("authenticate", async (user: UserSession) => {

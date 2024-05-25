@@ -37,9 +37,4 @@ export class DiscordController {
     }
     response.redirect('/api/roblox/login');
   }
-
-  @Get('status')
-  status(@Req() request: Request) {
-    return { id: request.sessionID, session: request.session };
-  }
 }

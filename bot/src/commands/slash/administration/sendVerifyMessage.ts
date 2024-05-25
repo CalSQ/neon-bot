@@ -11,7 +11,7 @@ import {
 import { command } from "../../../interfaces"
 
 const build = new SlashCommandBuilder()
-  .setName("sendverifymessage")
+  .setName("send-verify-message")
   .setDescription("Sends the default verification message to a channel")
   .addChannelOption((option) =>
     option
