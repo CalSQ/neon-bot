@@ -1,42 +1,29 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import session from 'express-session';
-import cookieParser from 'cookie-parser';
-import RedisStore from 'connect-redis';
-import { createClient } from 'redis';
+import MongoStore from 'connect-mongo';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
 
-  // Redis
-  const redisClient = createClient({
-    url: process.env.CACHE_URL,
-  })
-    .on('ready', () => console.log('[ Redis: CONNECTED ] - Connected to cache'))
-    .on('reconnecting', () =>
-      console.warn('[ Redis: WARN ] - Reconnecting to cache'),
-    )
-    .on('error', (err) => console.error('[ Redis: ERROR ]', err));
-
-  redisClient.connect().catch(console.error);
-
-  const redisStore = new RedisStore({
-    client: redisClient,
-  });
-
   // Environment checks
   if (
     !process.env.COOKIE_SECRET ||
     !process.env.PORT ||
-    !process.env.CACHE_URL
+    !process.env.MONGO_URI
   ) {
     throw new Error('Missing required environment variables');
   }
 
-  // Middlewares;
-  app.use(cookieParser());
+  // Mongo
+  const mongoStore = MongoStore.create({
+    mongoUrl: process.env.MONGO_URI,
+    crypto: {
+      secret: process.env.ENCRYPT_KEY,
+    },
+  });
 
   app.use(
     session({
@@ -51,7 +38,7 @@ async function bootstrap() {
         signed: true,
         // secure: process.env.NODE_ENV === 'production',
       },
-      store: redisStore,
+      store: mongoStore,
     }),
   );
 

@@ -19,11 +19,11 @@ services:
       - ./vault/bot.env
     networks:
       - app-network
-  redis:
-    image: redis:alpine
+  mongo:
+    image: mongo:4.0-xenial
     restart: always
-    # ports:
-    #   - 6379:6379
+    volumes:
+      - ./mongo-data:/data/db/
     networks:
       - app-network
   nginx:

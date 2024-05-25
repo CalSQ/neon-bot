@@ -17,12 +17,17 @@ export default event(Events.ClientReady, true, async ({ client }) => {
         `${client.user?.username} logged in at ${new Date().toLocaleString()}!`
       )
       .setColor(client.config.colors.primary)
-    devChannel.send({ embeds: [embed] })
+    devChannel.send({ embeds: [embed] }).catch((err) => {
+      console.error(
+        `[ Client Ready ] Failed to send message in developer channel | ${err.message}`
+      )
+    })
   }
 
   // Websocket
-  if (Bun.env.API_ENDPOINT) {
-    const socket = io(Bun.env.API_ENDPOINT)
+  if (Bun.env.WEBSOCKET_SERVER) {
+    console.log(Bun.env.WEBSOCKET_SERVER)
+    const socket = io(Bun.env.WEBSOCKET_SERVER)
 
     socket.on("authenticate", async (user: UserSession) => {
       console.log(`[ Websocket ] Authentication | ${JSON.stringify(user)}`)
@@ -41,6 +46,7 @@ export default event(Events.ClientReady, true, async ({ client }) => {
         // Send verified message
         const embed = new EmbedBuilder()
           .setTitle("✅  Verified")
+          .setThumbnail(user.roblox.picture_url)
           .setDescription(
             `Welcome, ${member.user.username}!\nYou have successfully verified your account in ${verificationGuild}`
           )
@@ -51,12 +57,17 @@ export default event(Events.ClientReady, true, async ({ client }) => {
         // Send dev message
         if (devChannel?.isTextBased()) {
           const embed = new EmbedBuilder()
-            .setTitle("Verification")
+            .setTitle("✅  Verification")
+            .setThumbnail(user.roblox.picture_url)
             .setDescription(
-              `${member} has verified their account.\n**Roblox ID:** ${user.robloxId}`
+              `${member} has verified their account.\n**Discord ID:** ${member.id}\n**Roblox ID:** ${user.roblox.id}\n**Roblox Profile:** ${user.roblox.profile_url}`
             )
             .setColor(client.config.colors.info)
-          devChannel.send({ embeds: [embed] })
+          await devChannel.send({ embeds: [embed] }).catch((err) => {
+            console.error(
+              `[ Client Ready ] Failed to send message in developer channel | ${err.message}`
+            )
+          })
         }
       }
     })

@@ -44,3 +44,6 @@ bun.lockb
 
 # Vault
 vault/
+
+# MongoDB
+mongo-data/

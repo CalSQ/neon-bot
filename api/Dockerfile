@@ -1,10 +1,11 @@
-FROM oven/bun
+FROM node:alpine
 
-RUN useradd -ms /bin/bash -u 1001 app
+# RUN useradd -ms /bin/bash -u 1001 app
 
 WORKDIR /app
-COPY --chown=app:app . .
-RUN bun install
-RUN bun run build
+# COPY --chown=app:app . .
+COPY . .
+RUN npm install
+RUN npm run build
 
-CMD ["sh", "-c", "bun run start:${APP_ENVIRONMENT_CMD}"]
+CMD ["sh", "-c", "npm run start:${APP_ENVIRONMENT_CMD}"]

@@ -37,7 +37,10 @@ export class RobloxController {
     }
     response.send({
       message: 'You have successfully verified, you may return to Discord.',
-      session: request.session.user,
+      session: {
+        discordId: request.session.user.discordId,
+        robloxId: request.session.user.roblox.id,
+      },
     });
   }
 }

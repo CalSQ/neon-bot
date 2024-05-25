@@ -3,7 +3,9 @@ networks:
     driver: bridge
 services:
   api:
-    build: ./api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     restart: always
     ports:
       - 6001:6001
@@ -12,6 +14,15 @@ services:
         required: true
     networks:
       - app-network
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./api
+    #       target: /app
+    #       ignore:
+    #         - node_modules/
+    #     - action: rebuild
+    #       path: ./api/package.json
   bot:
     build:
       context: ./bot
@@ -30,11 +41,18 @@ services:
             - node_modules/
         - action: rebuild
           path: ./bot/package.json
-  redis:
-    image: redis:alpine
+  # redis:
+  #   image: redis:alpine
+  #   restart: always
+  #   # ports:
+  #   #   - 6379:6379
+  #   networks:
+  #     - app-network
+  mongo:
+    image: mongo:4.0-xenial
     restart: always
-    # ports:
-    #   - 6379:6379
+    volumes:
+      - ./mongo-data:/data/db/
     networks:
       - app-network
   nginx:

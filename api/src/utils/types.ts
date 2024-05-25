@@ -68,20 +68,20 @@ export interface OAuthTokens {
   refreshToken: string;
 }
 
-export interface UserSession {
-  discordId?: string;
-  robloxId?: string;
-}
-
-export enum AuthType {
-  DISCORD = 'discord',
-  ROBLOX = 'roblox',
-}
-
 export interface RobloxProfile {
   id: string;
   username: string;
   display_name: string;
   profile_url: string;
   picture_url: string;
+}
+
+export interface UserSession {
+  discordId?: string;
+  roblox?: RobloxProfile;
+}
+
+export enum AuthType {
+  DISCORD = 'discord',
+  ROBLOX = 'roblox',
 }

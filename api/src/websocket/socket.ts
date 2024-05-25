@@ -8,7 +8,7 @@ export class WebsocketHandler {
   ws: Server;
 
   authenticate(user: UserSession) {
-    console.log(`[ Webhook ] Authenticating user ${user.discordId}`)
+    console.log(`[ Webhook ] Authenticating user ${user.discordId}`);
     this.ws.emit('authenticate', user);
   }
 }
